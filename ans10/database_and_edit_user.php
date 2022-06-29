@@ -7,14 +7,12 @@
     <title>Registratio form</title>
 </head>
 <body>
-    <Form action="" method="post" >
+    <Form action="database_and_edit_user.php" method="post" >
 
-
-    <input type="submit" name="submit" value="insert">
-    <input type="submit" name="submit2" value="edit">
-    <link href = "regformstyle.css" type = "text/css" rel = "stylesheet" />    
-        <h2>Sign Up</h2>    
-        <form name = "form1" action="modified.php" method = "post" enctype = "multipart/form-data" >    
+    <link href = "regformstyle.css" type = "text/css" rel = "stylesheet" />   
+    
+    
+        <h2>Sign Up</h2>       
             <div class = "container">    
                 <div class = "form_group">    
                     <label>Name:</label>    
@@ -38,8 +36,7 @@
                     <label>Password:</label>    
                     <input type = "password" name = "password" value = "" required/>    
                 </div>  
-                <input type="submit" name="submit" value="insert">
-                <input type="submit" name="submit2" value="edit">  
+                <input type="submit" name="submit" value="submit">  
             </div>    
         </form>    
     </body>   
@@ -49,28 +46,33 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "registrationform";
+$dbname = "regform";
 
-$link = mysqli_connect($servername, $name, $email, $gender, $phnnum, $gender, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-$con =mysqli_select_db($link, $dbname);
-if($con){
-    echo("connection success");
-}
-else
-{
-    die("connection failed".mysqli_connect_error());
-}
+if(isset($_POST["submit"])){
 
-if(isset($_POST["submit"]))
-{
-    mysqli_query($link,"insert into registrationform values('$_POST[name]', '$_POST[email]','$_POST[gender]','$_POST[password]')");
-    echo "Record inserted";
-}
+    $_SESSION['submit'] = $_POST['submit'];     
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $phnnum= $_POST["phnnum"];
+    $gender = $_POST["gender"];
+    $password = $_POST["password"];
 
-if(isset($_POST["submit2"]))
-{
-    mysqli_query($link,"update registrationform set username= '$_POST[name]' where username= '$_POST[username]'");
+    $sql = "insert into registrationform (name, email, phnnum, gender, password)
+    values ('$name', '$email', '$phnnum', '$gender', '$password')";
+
+    $data = mysqli_query($conn, $sql);
+
+    if($data){
+        echo "Data is successfully Inserted";
+    }
+    else
+    {
+        echo "Failed to inserted";
+    }
+    
+
 }
 ?>
 </body>
